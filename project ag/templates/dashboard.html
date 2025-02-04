@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Welcome, {{ session['username'] }} (Seller)!</h1>
+    <p>Contact: {{ contact }}</p>
+
+    <h2>Your Products</h2>
+    <div class="table-container">
+        <table border="1" cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Contact</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    {% if product.seller == session['username'] %}
+                        <tr>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.description }}</td>
+                            <td>${{ product.price }}</td>
+                            <td>{{ product.quantity }}</td>
+                            <td>{{ product.contact }}</td>
+                            <td><a href="/edit_product/{{ product.name }}" class="update-btn">Update</a></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>Your Orders</h2>
+    <div class="table-container">
+        <table border="1" cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Buyer</th>
+                    <th>Buyer Contact</th> <!-- Display buyer contact -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>{{ order.product_name }}</td>
+                        <td>{{ order.buyer }}</td>
+                        <td>{{ order.buyer_contact }}</td>  <!-- Buyer contact information -->
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <br>
+    <a href="/logout" class="logout-btn">Logout</a>
+</body>
+</html>
